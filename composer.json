@@ -1,0 +1,23 @@
+{
+    "name": "baconmanager/media-library-bundle",
+    "description": "This bundle of symfony2/3",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adan Felipe Medeiros",
+            "email": "adan.grg@gmail.com"
+        }
+    ],
+    "require": {
+        "oneup/uploader-bundle": "~1.4",
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "liip/imagine-bundle": "^1.6",
+    },
+    "suggest" : {
+        "knplabs/knp-gaufrette-bundle": "Filesystem configuration"
+    },
+    "autoload": {
+        "psr-4": { "Bacon\\Bundle\\MediaLibraryBundle\\": "" }
+    }
+}

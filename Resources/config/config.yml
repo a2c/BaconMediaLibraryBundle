@@ -1,0 +1,33 @@
+knp_gaufrette:
+    stream_wrapper: ~
+    adapters:
+        gallery:
+            local:
+                directory: %kernel.root_dir%/../web/uploads/gallery
+                create: true
+    filesystems:
+        gallery:
+            adapter: gallery
+            alias: gallery_filesystem
+
+oneup_uploader:
+    mappings:
+        gallery:
+            frontend: blueimp
+            storage:
+                type: gaufrette
+                filesystem: gaufrette.gallery_filesystem
+                stream_wrapper: gaufrette://gallery/
+
+liip_imagine:
+    loaders:
+        stream.gallery_filesystem:
+            stream:
+                wrapper: gaufrette://gallery/
+    filter_sets:
+        original: ~
+        thumb_from_original:
+            data_loader: stream.gallery_filesystem
+            quality: 75
+            filters:
+                thumbnail: { size: [120, 90], mode: outbound }

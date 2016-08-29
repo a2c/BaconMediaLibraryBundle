@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href="{{ asset('assets/css/vendor.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('assets/css/bundles.css') }}" />
+        <link rel="stylesheet" href="{{ asset('vendor/blueimp-file-upload/css/jquery.fileupload.css') }}" />
+        <style>
+            #progress {
+                display: none;
+                margin-top: 10px;
+            }
+        </style>
+    {% endblock stylesheets %}
+    </head>
+
+    <body>
+    {% block content %}
+        {% include '@BaconMediaLibrary/Partial/modalAjax.html.twig' with {
+        theme_modal: '',
+        theme_button_class: 'btn-primary',
+        upload_title_modal: 'Box upload Media',
+        theme_icon_upload: 'glyphicon glyphicon-upload',
+        theme_button_footer_class_selected: 'btn btn-success',
+        theme_button_footer_class_close: 'btn btn-default',
+        layoutExtends: 'BaconCoreBundle::layout.html.twig',
+        pagination: pagination
+        } %}
+    {% endblock content %}
+    {% block javascripts %}
+        <script src="{{ asset('assets/js/vendor.js') }}"></script>
+        <script src="{{ asset('assets/js/bundles.js') }}"></script>
+        <script src="{{ asset('vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js') }}"></script>
+        <script src="{{ asset('vendor/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
+        <script src="{{ asset('vendor/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
+        <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}"></script>
+        <script>
+            jQuery(document).ready(function($) {
+                $(document).find('#myModal').modal('show');
+                $(document).find('#return_value_save').on('click', function () {
+                    var srcImage = $(document).find('input.value_image_select:checked').data('src');
+                    $(window.opener.document).find('#cke_118_textInput').val(srcImage);
+                    window.close();
+                });
+
+
+                $('#fileupload').fileupload({
+                    dataType: 'json',
+                    progressall: function (e, data) {
+                        $('#progress').show();
+
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+
+                        $('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                        );
+                    },
+                    done: function (e, data) {
+                        $('#progress').hide();
+
+                        var result = data.result;
+                        if (typeof result === 'object') {
+
+                            $('#table_list_uploads tbody').append('<tr>' + '<td>' +
+                                '<div class="media"> ' +
+                                '<div class="media-left media-middle"> ' +
+                                '<a href="#"> ' +
+                                '<img class="media-object" src="'+result.bacon_media_library.src+'" alt="'+result.bacon_media_library.name+'">' +
+                                '<input type="radio" name="select_image" class="value_image_select" value="'+result.bacon_media_library.id+'" data-id="'+result.bacon_media_library.id+'" data-src="'+result.bacon_media_library.src+'" checked> ' +
+                                '</a> ' +
+                                '</div> ' +
+                                '<div class="media-body"> ' +
+                                '<h5 class="media-heading">'+result.bacon_media_library.name+'</h5>' +
+                                '<button class="btn btn-danger remove_upload_modal"><span class="glyphicon glyphicon-remove-circle"></span> Remove</button> ' +
+                                '</div> ' +
+                                '</div> ' +
+                                '</td>'
+                            );
+                        }
+
+                        $(window.opener.document).find('#cke_118_textInput').val(result.bacon_media_library.src);
+                        window.close();
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
+    </body>
+</html>

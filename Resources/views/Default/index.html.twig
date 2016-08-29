@@ -1,0 +1,22 @@
+{% if app.request.xmlHttpRequest %}
+    {% include '@BaconMediaLibrary/Partial/modalAjax.html.twig' with {
+        theme_modal: '',
+        theme_button_class: 'btn-primary',
+        upload_title_modal: 'Box upload Media',
+        theme_icon_upload: 'glyphicon glyphicon-upload',
+        theme_button_footer_class_selected: 'btn btn-success',
+        theme_button_footer_class_close: 'btn btn-default',
+        layoutExtends: 'BaconCoreBundle::layout.html.twig',
+        pagination: pagination
+    } %}
+{% else %}
+    {% include '@BaconMediaLibrary/Partial/modal.html.twig' with {
+        theme_modal: '',
+        theme_button_class: 'btn-primary',
+        upload_title_modal: 'Box upload Media',
+        theme_icon_upload: 'glyphicon glyphicon-upload',
+        theme_button_footer_class_selected: 'btn btn-success',
+        theme_button_footer_class_close: 'btn btn-default',
+        layoutExtends: 'BaconCoreBundle::layout.html.twig'
+    } %}
+{% endif %}
