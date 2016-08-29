@@ -42,7 +42,7 @@
                                     <div class="media">
                                         <div class="media-left media-middle">
                                             <a href="#">
-                                                <img class="media-object" src="{{ item.name| imagine_filter('thumb_from_original') }}" alt="{{ item.originalName }}">
+                                                <img class="media-object" src="{{ item.name| imagine_filter('thumb_from_original') }}" alt="{{ item.originalName }}" width="120">
                                                 <input type="radio" name="select_image" class="value_image_select" value="{{ item.id }}" data-id="{{ item.id }}" data-src="{{ item.name| imagine_filter('thumb_from_original') }}">
                                             </a>
                                         </div>
