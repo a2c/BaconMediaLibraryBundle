@@ -1,81 +1,72 @@
 <div class="modal {{ theme_modal }} fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">{{ upload_title_modal }}</h4>
-            </div>
-            <div class="modal-body">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">{{ upload_title_modal }}</h4>
+			</div>
+			<div class="modal-body">
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <span class="btn btn-lg {{ theme_button_class }} fileinput-button">
-                            <i class="{{ theme_icon_upload }}"></i>
-                            <span>Upload</span>
-                            <input id="fileupload" type="file" name="files" data-url="{{ oneup_uploader_endpoint('gallery') }}">
-                        </span>
-                    </div>
-                </div>
+				<div id="progress" class="progress">
+					<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+						<span class="sr-only">100% Complete (success)</span>
+					</div>
+				</div>
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div id="progress" class="progress">
-                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                <span class="sr-only">100% Complete (success)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <table class="table no-border" id="table_list_uploads">
-                            <tbody>
-                            {% for item in pagination %}
-                                {% if loop.index == 0 %}
-                                    <tr>
-                                {% elseif loop.index%3 == 0 %}
-                                    </tr>
-                                    <tr>
-                                {% endif %}
+        <div id="list_uploads">
+  				<div class="row">
 
-                                <td>
-                                    <div class="media">
-                                        <div class="media-left media-middle">
-                                            <a href="#">
-                                                <img class="media-object" src="{{ item.name| imagine_filter('thumb_from_original') }}" alt="{{ item.originalName }}" width="120">
-                                                <input type="radio" name="select_image" class="value_image_select" value="{{ item.id }}" data-id="{{ item.id }}" data-src="{{ item.name| imagine_filter('thumb_from_original') }}">
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="media-heading">{{ item.originalName }}</h5>
-                                            <button class="btn btn-danger remove_upload_modal"><span class="glyphicon glyphicon-remove-circle"></span> Remove</button>
-                                        </div>
-                                    </div>
-                                </td>
+  					{% for item in pagination %}
 
-                                {% if loop.last %}
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3">
-                                        <nav aria-label="Page navigation">
-                                            {{ knp_pagination_render(pagination) }}
-                                        </nav>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
+  						<div class="col-md-4">
+  							<div class="thumbnail">
+  								<a href="{{ item.name| imagine_filter('original') }}" class="fancybox">
+  									<img class="media-object" src="{{ item.name| imagine_filter('thumb_from_original') }}" alt="{{ item.originalName }}" width="120" class="img-responsive">
+  								</a>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="{{ theme_button_footer_class_close }} pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="{{ theme_button_footer_class_selected }}" id="return_value_save">Select</button>
-            </div>
+  								<div class="caption">
+  									<h4 class="thumbnail-title text-center">{{ item.originalName }}</h4>
+
+  									<div class="btn-group btn-group-justified">
+  										<div class="btn-group">
+  											<label class="btn btn-default">
+  												<input type="radio" name="select_image" class="value_image_select" value="{{ item.id }}" data-id="{{ item.id }}" data-src="{{ item.name| imagine_filter('thumb_from_original') }}">
+  												Selecionar
+  											</label>
+  										</div>
+
+  										<div class="btn-group">
+  											<button class="btn btn-danger remove_upload_modal">
+  												<span class="glyphicon glyphicon-remove-circle"></span>
+  												Remover
+  											</button>
+  										</div>
+  									</div>
+  								</div>
+  							</div>
+  						</div>
+
+  					{% endfor %}
+
+  				</div>
+
+  				<nav aria-label="Page navigation">
+  					{{ knp_pagination_render(pagination) }}
+  				</nav>
+
         </div>
-    </div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="{{ theme_button_footer_class_close }} pull-left" data-dismiss="modal">Close</button>
+
+				<span class="btn {{ theme_button_class }} fileinput-button">
+					<span class="{{ theme_icon_upload }}"></span>
+					Add
+					<input id="fileupload" type="file" name="files" data-url="{{ oneup_uploader_endpoint('gallery') }}">
+				</span>
+				<button type="button" class="{{ theme_button_footer_class_selected }}" id="return_value_save">Select</button>
+			</div>
+		</div>
+	</div>
 </div>

@@ -1,0 +1,17 @@
+#progress {
+	display: none;
+	margin-top: 10px;
+}
+
+.thumbnail a > img,
+.thumbnail > img {
+	margin-bottom: 9px;
+	margin-top: 9px;
+}
+
+.thumbnail-title {
+	line-height: 1.2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

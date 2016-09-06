@@ -8,6 +8,8 @@
                 <input type="hidden" {{ block('button_attributes') }} value="{{ value_hidden is defined ? value_hidden : ''  }}"/>
                 {% if image is defined %}
                     <img src="{{ image|imagine_filter('thumb_from_original') }}" id="bacon_media_library_image_thumb" class="img-thumbnail" width="150px" height="400px" />
+                {% else %}
+                    <img id="bacon_media_library_image_thumb" class="img-thumbnail hidden" width="150px" height="400px" />
                 {% endif %}
             </div>
         </div>
