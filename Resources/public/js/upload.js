@@ -1,6 +1,8 @@
 function bacon_upload_bundle(before, done) {
 
-	$('#myModal').modal('show');
+  if (typeof before !== 'undefined') {
+    before();
+  }
 
 	var $progress = $('#progress');
 
@@ -58,4 +60,5 @@ function bacon_upload_bundle(before, done) {
 			}
 		}
 	});
+
 }

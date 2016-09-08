@@ -54,9 +54,9 @@ class UploadListener
             $this->classEntity->setUploadAt(new \DateTime('now'));
 
             if (method_exists($file,'getClientOriginalName')) {
-                $this->classEntity->setOriginalName($file->getClientOriginalName());    
+                $this->classEntity->setOriginalName($file->getClientOriginalName());
             }else{
-              $this->classEntity->setOriginalName($event->getFile()->getName());  
+              $this->classEntity->setOriginalName($event->getFile()->getName());
             }
 
             $this->om->persist($this->classEntity);
@@ -66,11 +66,12 @@ class UploadListener
                 $response['bacon_media_library'] = [
                     'id'    =>  $this->classEntity->getId(),
                     'src'   =>  $this->liipCacheManager->getBrowserPath($event->getFile()->getName(), 'thumb_from_original'),
+                    'srcOriginal' => $this->liipCacheManager->getBrowserPath($event->getFile()->getName(), 'original'),
                     'name'  =>  $file->getClientOriginalName(),
                 ];
             }
         }
-    
+
     }
 
     /**

@@ -12,18 +12,18 @@
 	</head>
 
 	<body>
+
 	{% block content %}
-		{% include '@BaconMediaLibrary/Partial/modalAjax.html.twig' with {
-			theme_modal: '',
-			theme_button_class: 'btn-primary',
-			upload_title_modal: 'Box upload Media',
-			theme_icon_upload: 'glyphicon glyphicon-upload',
-			theme_button_footer_class_selected: 'btn btn-success',
-			theme_button_footer_class_close: 'btn btn-default',
-			layoutExtends: 'BaconCoreBundle::layout.html.twig',
-			pagination: pagination
-		} %}
+    {% include '@BaconMediaLibrary/Partial/uploads.html.twig' with {
+      upload_title_modal: 'Box upload Media',
+      pagination: pagination,
+      theme_button_class: 'btn btn-lg btn-primary',
+      theme_icon_upload: 'glyphicon glyphicon-upload',
+      theme_button_footer_class_close: 'btn btn-lg btn-default',
+      theme_button_footer_class_selected: 'btn btn-lg btn-success'
+    } %}
 	{% endblock content %}
+
 	{% block javascripts %}
 		<script src="{{ asset('assets/js/vendor.js') }}"></script>
 		<script src="{{ asset('assets/js/bundles.js') }}"></script>

@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+
 	bacon_upload_bundle(
 		function() {
 			$('#return_value_save').on('click', function() {
@@ -8,8 +9,9 @@ jQuery(document).ready(function($) {
 			});
 		},
 		function(image) {
-			$(window.opener.document).find('#cke_118_textInput').val(image.src);
+			$(window.opener.document).find('#cke_118_textInput').val(image.srcOriginal);
 			window.close();
 		}
 	);
+
 });
