@@ -10,6 +10,36 @@ function bacon_upload_bundle(before, done) {
 		maxWidth: 768
 	});
 
+  $('.remove_upload_modal').on('click', function(e) {
+    e.preventDefault();
+
+    if (confirm('Deseja realmente remover essa imagem?')) {
+      var $image = $(this).closest('.thumbnail'),
+          id = $image.find('.value_image_select').attr('data-id');
+
+      var $this = $(this);
+      $this
+        .data('default', $this.html())
+        .text('Removendo...');
+
+      $.ajax({
+        url: '', // id
+        success: function(data) {
+          if (data.status == 'success') {
+            $image.remove();
+          } else {
+            $this.html($this.data('default'));
+
+            alert(data.message);
+          }
+        },
+        error: function() {
+          $this.text('Erro');
+        }
+      });
+    }
+  });
+
 	$(document).find('#fileupload').fileupload({
 		dataType: 'json',
 		progressall: function (e, data) {
@@ -25,7 +55,7 @@ function bacon_upload_bundle(before, done) {
 			if (typeof data.result === 'object') {
 				var image = data.result.bacon_media_library;
 
-				$('#list_uploads .row').append(['<div class="col-md-4">',
+				$('#list_uploads .row').append([
 					'<div class="thumbnail">',
 						'<a href="', image.src, '" class="fancybox">',
 							'<img class="media-object" src="', image.src, '" alt="', image.name, '" width="120" class="img-responsive">',
@@ -48,7 +78,7 @@ function bacon_upload_bundle(before, done) {
 							'</div>',
 						'</div>',
 					'</div>',
-				'</div>'].join(''));
+				].join(''));
 
 				$('.fancybox').fancybox({
 					maxWidth: 768

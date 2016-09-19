@@ -13,41 +13,36 @@
         </div>
 
         <div id="list_uploads">
-          <div class="row">
 
-            {% for item in pagination %}
+          {% for item in pagination %}
 
-              <div class="col-md-4">
-                <div class="thumbnail">
-                  <a href="{{ item.name| imagine_filter('original') }}" class="fancybox">
-                    <img class="media-object" src="{{ item.name| imagine_filter('thumb_from_original') }}" alt="{{ item.originalName }}" width="120" class="img-responsive">
-                  </a>
+            <div class="thumbnail">
+              <a href="{{ item.name| imagine_filter('original') }}" class="fancybox">
+                <img class="media-object" src="{{ item.name| imagine_filter('thumb_from_original') }}" alt="{{ item.originalName }}" width="120" class="img-responsive">
+              </a>
 
-                  <div class="caption">
-                    <h4 class="thumbnail-title text-center">{{ item.originalName }}</h4>
+              <div class="caption">
+                <h4 class="thumbnail-title text-center">{{ item.originalName }}</h4>
 
-                    <div class="btn-group btn-group-justified">
-                      <div class="btn-group">
-                        <label class="btn btn-default">
-                          <input type="radio" name="select_image" class="value_image_select" value="{{ item.id }}" data-id="{{ item.id }}" data-src="{{ item.name| imagine_filter('original') }}">
-                          Selecionar
-                        </label>
-                      </div>
+                <div class="btn-group btn-group-justified">
+                  <div class="btn-group">
+                    <label class="btn btn-default">
+                      <input type="radio" name="select_image" class="value_image_select" value="{{ item.id }}" data-id="{{ item.id }}" data-src="{{ item.name| imagine_filter('original') }}">
+                      Selecionar
+                    </label>
+                  </div>
 
-                      <div class="btn-group">
-                        <button class="btn btn-danger remove_upload_modal">
-                          <span class="glyphicon glyphicon-remove-circle"></span>
-                          Remover
-                        </button>
-                      </div>
-                    </div>
+                  <div class="btn-group">
+                    <button class="btn btn-danger remove_upload_modal">
+                      <span class="glyphicon glyphicon-remove-circle"></span>
+                      Remover
+                    </button>
                   </div>
                 </div>
               </div>
+            </div>
 
-            {% endfor %}
-
-          </div>
+          {% endfor %}
 
           <nav aria-label="Page navigation">
             {{ knp_pagination_render(pagination) }}
@@ -58,12 +53,17 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="{{ theme_button_footer_class_close }} pull-left" data-dismiss="modal">Close</button>
+        <button type="button" class="{{ theme_button_footer_class_close }} pull-left" data-dismiss="modal">
+          <span class="glyphicon glyphicon-remove-sign"></span> Close
+        </button>
 
         <span class="{{ theme_button_class }} fileinput-button">
-          <span class="{{ theme_icon_upload }}"></span> Add
+          <span class="glyphicon glyphicon-plus-sign"></span> Add
           <input id="fileupload" type="file" name="files" data-url="{{ oneup_uploader_endpoint('gallery') }}">
         </span>
-        <button type="button" class="{{ theme_button_footer_class_selected }}" id="return_value_save">Select</button>
+
+        <button type="button" class="{{ theme_button_footer_class_selected }}" data-toggle="tooltip" data-placement="top" title="Select or upload a image" id="return_value_save">
+          <span class="glyphicon glyphicon-ok-sign"></span> Select
+        </button>
       </div>
     </div>

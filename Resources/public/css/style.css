@@ -3,13 +3,26 @@
 	margin-top: 10px;
 }
 
-.thumbnail a > img,
-.thumbnail > img {
+#list_uploads {
+  margin: 0 -5px;
+}
+
+#list_uploads .thumbnail {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 280px;
+}
+
+#list_uploads .thumbnail a > img,
+#list_uploads .thumbnail > img {
 	margin-bottom: 9px;
 	margin-top: 9px;
 }
 
-.thumbnail-title {
+#list_uploads .thumbnail-title {
 	line-height: 1.2;
 	overflow: hidden;
 	text-overflow: ellipsis;
