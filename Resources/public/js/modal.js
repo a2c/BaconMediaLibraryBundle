@@ -1,6 +1,7 @@
 jQuery(document).ready(function($) {
 
-	$('#bacon_upload_modal').on('click', function() {
+	$('.bacon_upload_modal').on('click', function() {
+		var $this = $(this);
 
 		$.ajax({
 			url: Routing.generate('bacon_manager_url'),
@@ -9,13 +10,15 @@ jQuery(document).ready(function($) {
 				$('body').append(data);
 
 				var $modal = $('#myModal');
-				$modal.modal('show');
+				$modal.modal('show').on('hidden.bs.modal', function () {
+                    $modal.remove();
+                })
 
 				bacon_upload_bundle(
 					undefined,
 					function(image) {
-						var $uploadModal = $('#bacon_upload_modal'),
-							$thumb = $(['#', $uploadModal.data('return-src')].join('')),
+						var $uploadModal = $this,
+							$thumb = $this.closest('.media-widget').find('.img-thumbnail'),
 							$hiddenImage = $(['#', $uploadModal.data('return-id')].join(''));
 
 						$thumb.attr('src', image.src).removeClass('hidden');
@@ -27,8 +30,8 @@ jQuery(document).ready(function($) {
 
 				$modal.find('#return_value_save').on('click', function () {
 					var $input = $('input.value_image_select:checked'),
-						$uploadModal = $('#bacon_upload_modal'),
-						$thumb = $(['#', $uploadModal.data('return-src')].join('')),
+						$uploadModal = $this,
+						$thumb = $this.closest('.media-widget').find('.img-thumbnail'),
 						$hiddenImage = $(['#', $uploadModal.data('return-id')].join(''));
 
 					$thumb.attr('src', $input.data('src')).removeClass('hidden');

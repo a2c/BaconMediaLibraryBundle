@@ -28,3 +28,11 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+
+.media-widget .img-thumbnail {
+	margin-bottom: 15px;
+}
+
+.media-widget .img-thumbnail.hidden {
+	margin: 0;
+}

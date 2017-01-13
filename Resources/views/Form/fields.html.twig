@@ -2,20 +2,21 @@
 
 {% block media_library_widget %}
     {% spaceless %}
-        <div class="form-group">
-            {{ block('form_label') }}
-            <div class="col-sm-10">
-                <input type="hidden" {{ block('button_attributes') }} value="{{ value_hidden is defined ? value_hidden : ''  }}"/>
-                {% if image is defined %}
-                    <img src="{{ image|imagine_filter('thumb_from_original') }}" id="bacon_media_library_image_thumb" class="img-thumbnail" width="150px" height="400px" />
-                {% else %}
-                    <img id="bacon_media_library_image_thumb" class="img-thumbnail hidden" width="150px" height="400px" />
-                {% endif %}
+        <div class="media-widget">
+            <div class="form-group">
+                {{ block('form_label') }}
+                <div class="col-sm-10">
+                    <input type="hidden" {{ block('button_attributes') }} value="{{ value_hidden is defined ? value_hidden : ''  }}"/>
+                    {% if image is defined %}
+                        <img src="{{ image|imagine_filter('thumb_from_original') }}" class="img-thumbnail" width="150px" height="400px" />
+                    {% else %}
+                        <img class="img-thumbnail hidden" width="150px" height="400px" />
+                    {% endif %}
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn btn-primary bacon_upload_modal" data-toggle="modal" data-return-src="bacon_media_library_image_thumb" data-return-id="{{ id }}">Upload</button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-2"> </div>
-            <div class="col-lg-10"><button type="button" class="btn btn-primary" data-toggle="modal" id="bacon_upload_modal" data-return-src="bacon_media_library_image_thumb" data-return-id="{{ id }}">Upload</button></div>
         </div>
     {% endspaceless %}
 {% endblock media_library_widget %}
