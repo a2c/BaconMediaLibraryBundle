@@ -85,7 +85,7 @@ class UploadListener
                     'src'           =>  $this->liipCacheManager->getBrowserPath($event->getFile()->getName(), 'thumb_from_original'),
                     'srcOriginal'   =>  $this->liipCacheManager->getBrowserPath($event->getFile()->getName(), 'original'),
                     'name'          =>  $file->getClientOriginalName(),
-                    'isImage'       =>  $this->classEntity->getIsImage(),
+                    'isImage'       =>  $this->classEntity->isImage(),
                 ];
             }
         }
