@@ -3,8 +3,10 @@
 namespace Bacon\Bundle\MediaLibraryBundle\EventListener;
 
 use Bacon\Bundle\MediaLibraryBundle\Model\MediaLibraryInterface;
+use Bacon\Bundle\MediaLibraryBundle\Validator\ValidatorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
+use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 
@@ -33,6 +35,16 @@ class UploadListener
      */
     private $liipCacheManager;
 
+    /**
+     * @var ValidatorInterface
+     */
+    private $validatorManager;
+
+    /**
+     * @var GaufretteFile
+     */
+    private $gaufrette;
+
     public function __construct(ObjectManager $om)
     {
         $this->om = $om;
@@ -47,7 +59,7 @@ class UploadListener
         $files = $request->files->all();
         if (isset($files['files'])) {
 
-            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile */
+            /**@var \Symfony\Component\HttpFoundation\File\UploadedFile */
             $file = $files['files'];
 
             $this->classEntity->setName($event->getFile()->getName());
@@ -56,7 +68,12 @@ class UploadListener
             if (method_exists($file,'getClientOriginalName')) {
                 $this->classEntity->setOriginalName($file->getClientOriginalName());
             }else{
-              $this->classEntity->setOriginalName($event->getFile()->getName());
+                $this->classEntity->setOriginalName($event->getFile()->getName());
+            }
+
+            $this->validatorManager->setData($event->getFile()->getName());
+            if ($this->validatorManager->isValid()) {
+                $this->classEntity->setIsImage(true);
             }
 
             $this->om->persist($this->classEntity);
@@ -64,10 +81,11 @@ class UploadListener
             if (method_exists($file,'getClientOriginalName')) {
                 $response = $event->getResponse();
                 $response['bacon_media_library'] = [
-                    'id'    =>  $this->classEntity->getId(),
-                    'src'   =>  $this->liipCacheManager->getBrowserPath($event->getFile()->getName(), 'thumb_from_original'),
-                    'srcOriginal' => $this->liipCacheManager->getBrowserPath($event->getFile()->getName(), 'original'),
-                    'name'  =>  $file->getClientOriginalName(),
+                    'id'            =>  $this->classEntity->getId(),
+                    'src'           =>  $this->liipCacheManager->getBrowserPath($event->getFile()->getName(), 'thumb_from_original'),
+                    'srcOriginal'   =>  $this->liipCacheManager->getBrowserPath($event->getFile()->getName(), 'original'),
+                    'name'          =>  $file->getClientOriginalName(),
+                    'isImage'       =>  $this->classEntity->getIsImage(),
                 ];
             }
         }
@@ -106,5 +124,42 @@ class UploadListener
         }
 
         throw new \InvalidArgumentException('A classe deve ser da instancia de MediaLibraryInterface');
+    }
+
+    /**
+     * @return ValidatorInterface
+     */
+    public function getValidatorManager()
+    {
+        return $this->validatorManager;
+    }
+
+    /**
+     * @param ValidatorInterface $validatorManager
+     * @return UploadListener
+     */
+    public function setValidatorManager(ValidatorInterface $validatorManager)
+    {
+        $this->validatorManager = $validatorManager;
+        return $this;
+    }
+
+    /**
+     * @return \Gaufrette\Filesystem
+     */
+    public function getGaufrette($event)
+    {
+        $adapter = $this->gaufrette->getIterator();
+        $fileSystem = $adapter->getArrayCopy()[$event->getType()];
+
+        return $fileSystem;
+    }
+
+    /**
+     * @param GaufretteFile $gaufrette
+     */
+    public function setGaufrette($gaufrette)
+    {
+        $this->gaufrette = $gaufrette;
     }
 }

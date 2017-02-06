@@ -64,4 +64,15 @@ interface MediaLibraryInterface
      * @return MediaLibrary
      */
     public function setLink($link);
+
+    /**
+     * @param $isImage
+     * @return mixed
+     */
+    public function setIsImage($isImage);
+
+    /**
+     * @return true
+     */
+    public function isImage();
 }

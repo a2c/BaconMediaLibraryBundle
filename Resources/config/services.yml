@@ -3,7 +3,7 @@ parameters:
     upload_entity.class: Bacon\Bundle\MediaLibraryBundle\Entity\MediaLibrary
     form_type_extension.class: Bacon\Bundle\MediaLibraryBundle\Form\Type\MediaLibraryType
     form_data_transformer: Bacon\Bundle\MediaLibraryBundle\Form\DataTransformer\MediaLibraryFormTransformer
-
+    validator_manager: Bacon\Bundle\MediaLibraryBundle\Validator\ValidatorManager
 services:
     bacon.media_library.upload_listener:
         class: "%upload_listener.class%"
@@ -13,6 +13,8 @@ services:
         calls:
              - [setClassEntity, ['%upload_entity.class%']]
              - [setLiipCacheManager, ['@liip_imagine.cache.manager']]
+             - [setValidatorManager, ['@bacon.media_library.validator.validator_manager.image']]
+             - [setGaufrette, ['@knp_gaufrette.filesystem_map']]
 
     bacon.media_library.form_type.media_library_type_extension:
         class: "%form_type_extension.class%"
@@ -24,3 +26,10 @@ services:
     bacon.media_library.form_data_transformer.instance:
         class: "%form_data_transformer%"
         arguments: ["@doctrine.orm.entity_manager"]
+
+    bacon.media_library.validator.validator_manager.image:
+        class: "%validator_manager%"
+        arguments: ["@bacon.media_library.validator.rules.image"]
+
+    bacon.media_library.validator.rules.image:
+        class: Bacon\Bundle\MediaLibraryBundle\Validator\Rules\Image

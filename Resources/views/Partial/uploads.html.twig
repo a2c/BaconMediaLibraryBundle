@@ -17,9 +17,13 @@
           {% for item in pagination %}
 
             <div class="thumbnail">
-              <a href="{{ item.name| imagine_filter('original') }}" class="fancybox">
-                <img class="media-object" src="{{ item.name| imagine_filter('thumb_from_original') }}" alt="{{ item.originalName }}" width="120" class="img-responsive">
-              </a>
+              {% if item.isImage %}
+                <a href="{{ item.name| imagine_filter('original') }}" class="fancybox">
+                  <img class="media-object" src="{{ item.name| imagine_filter('thumb_from_original') }}" alt="{{ item.originalName }}" width="120" class="img-responsive">
+                </a>
+              {% else %}
+                  <i class="fa fa-file"></i>
+              {% endif %}
 
               <div class="caption">
                 <h4 class="thumbnail-title text-center">{{ item.originalName }}</h4>

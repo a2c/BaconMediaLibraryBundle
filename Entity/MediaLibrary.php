@@ -41,6 +41,11 @@ class MediaLibrary implements MediaLibraryInterface
     private $link;
 
     /**
+     * @ORM\Column(name="is_image", type="boolean", nullable=false)
+     */
+    private $isImage;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -137,5 +142,15 @@ class MediaLibrary implements MediaLibraryInterface
         }
 
         return $this->link;
+    }
+
+    public function setIsImage($isImage)
+    {
+        $this->isImage = $isImage;
+    }
+
+    public function isImage()
+    {
+        return $this->isImage;
     }
 }

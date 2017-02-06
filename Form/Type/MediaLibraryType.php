@@ -31,9 +31,16 @@ class MediaLibraryType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        $view->vars['is_image'] = $options['is_image'];
         if ($form->getData() instanceof MediaLibraryInterface) {
             $view->vars['value_hidden'] = $form->getData()->getId();
-            $view->vars['image'] = $form->getData()->getName();
+
+            if ($form->getData()->isImage())
+                $view->vars['image'] = $form->getData()->getName();
+            else
+                $view->vars['file']  = $form->getData()->getName();
+
+            $view->vars['name_original']  = $form->getData()->getOriginalName();
         }
 
         parent::buildView($view, $form, $options);
@@ -43,6 +50,7 @@ class MediaLibraryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'Bacon\Bundle\MediaLibraryBundle\Entity\MediaLibrary',
+            'is_image'   => true,
         ]);
     }
 
