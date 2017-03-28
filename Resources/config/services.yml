@@ -1,35 +1,37 @@
 parameters:
-    upload_listener.class: Bacon\Bundle\MediaLibraryBundle\EventListener\UploadListener
-    upload_entity.class: Bacon\Bundle\MediaLibraryBundle\Entity\MediaLibrary
-    form_type_extension.class: Bacon\Bundle\MediaLibraryBundle\Form\Type\MediaLibraryType
-    form_data_transformer: Bacon\Bundle\MediaLibraryBundle\Form\DataTransformer\MediaLibraryFormTransformer
-    validator_manager: Bacon\Bundle\MediaLibraryBundle\Validator\ValidatorManager
+    media_library_upload_listener.class: Bacon\Bundle\MediaLibraryBundle\EventListener\UploadListener
+    media_library_upload_entity.class: Bacon\Bundle\MediaLibraryBundle\Entity\MediaLibrary
+    media_library_form_type_extension.class: Bacon\Bundle\MediaLibraryBundle\Form\Type\MediaLibraryType
+    media_library_form_data_transformer: Bacon\Bundle\MediaLibraryBundle\Form\DataTransformer\MediaLibraryFormTransformer
+    media_library_validator_manager: Bacon\Bundle\MediaLibraryBundle\Validator\ValidatorManager
+    media_library_validator_rules.class: Bacon\Bundle\MediaLibraryBundle\Validator\Rules\Image
+
 services:
     bacon.media_library.upload_listener:
-        class: "%upload_listener.class%"
+        class: "%media_library_upload_listener.class%"
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
         calls:
-             - [setClassEntity, ['%upload_entity.class%']]
+             - [setClassEntity, ['%media_library_upload_entity.class%']]
              - [setLiipCacheManager, ['@liip_imagine.cache.manager']]
              - [setValidatorManager, ['@bacon.media_library.validator.validator_manager.image']]
              - [setGaufrette, ['@knp_gaufrette.filesystem_map']]
 
     bacon.media_library.form_type.media_library_type_extension:
-        class: "%form_type_extension.class%"
+        class: "%media_library_form_type_extension.class%"
         tags:
-            - { name: form.type }
+              - { name: form.type }
         calls:
-            - [setModelTransformer, ["@bacon.media_library.form_data_transformer.instance"]]
+              - [setModelTransformer, ['@bacon.media_library.form_data_transformer.instance']]
 
     bacon.media_library.form_data_transformer.instance:
-        class: "%form_data_transformer%"
+        class: "%media_library_form_data_transformer%"
         arguments: ["@doctrine.orm.entity_manager"]
 
     bacon.media_library.validator.validator_manager.image:
-        class: "%validator_manager%"
+        class: "%media_library_validator_manager%"
         arguments: ["@bacon.media_library.validator.rules.image"]
 
     bacon.media_library.validator.rules.image:
-        class: Bacon\Bundle\MediaLibraryBundle\Validator\Rules\Image
+        class: "%media_library_validator_rules.class%"
