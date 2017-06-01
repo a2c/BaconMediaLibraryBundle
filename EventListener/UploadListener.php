@@ -70,7 +70,8 @@ class UploadListener
             }else{
                 $this->classEntity->setOriginalName($event->getFile()->getName());
             }
-
+            
+            $this->classEntity->setIsImage(false);
             $this->validatorManager->setData($event->getFile()->getName());
             if ($this->validatorManager->isValid()) {
                 $this->classEntity->setIsImage(true);
